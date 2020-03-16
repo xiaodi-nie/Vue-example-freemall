@@ -1,13 +1,14 @@
 <template>
-  <div id="app">
-    <router-view></router-view>
+  <div class="hello">
+    
   </div>
 </template>
 
 <script>
 export default {
-  name: 'App',
-  
+  name: 'modal',
+  props: {
+  },
 }
 </script>
 
