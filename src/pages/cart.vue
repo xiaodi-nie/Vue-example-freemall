@@ -56,7 +56,7 @@
             <li v-for="item in cartList" :key="item.productId ">
               <div class="cart-tab-1">
                 <div class="cart-item-check">
-                  <a href="javascipt:;" class="checkbox-btn item-check-btn" v-bind:class="{'checked':item.checked}">
+                  <a href="javascipt:;" class="checkbox-btn item-check-btn" v-bind:class="{'checked':item.checked}" @click="editCart('check', item)">
                     <svg class="icon icon-ok">
                       <use xlink:href="#icon-ok"></use>
                     </svg>
@@ -77,15 +77,15 @@
                 <div class="item-quantity">
                   <div class="select-self select-self-open">
                     <div class="select-self-area">
-                      <a class="input-sub">-</a>
+                      <a class="input-sub" v-on:click="editCart('minus',item)">-</a>
                       <span class="select-ipt">{{item.productNum}}</span>
-                      <a class="input-add">+</a>
+                      <a class="input-add" v-on:click="editCart('add',item)">+</a>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="cart-tab-4">
-                <div class="item-price-total">${{item.productPrice*item.productNum}}</div>
+                <div class="item-price-total">{{(item.productPrice*item.productNum) | currency}}</div>
               </div>
               <div class="cart-tab-5">
                 <div class="cart-item-opration">
@@ -149,13 +149,34 @@ export default {
   mounted(){
       this.init();//initialize cart item list
   },
+  filters:{
+      currency(value){
+          if(!value)return 0.00;
+          return '$' + value.toFixed(2);
+      }
+  },
   methods:{
+      //initialize cart list
       init(){
           this.axios.get("/mock/cart.json").then((response)=>{
               console.log(response);
               let res = response.data;
               this.cartList = res.data;
           })
+      },
+      //edit item number in cart
+      editCart(type,item){
+          if(type == 'add'){
+              item.productNum++;
+          }
+          else if(type == 'minus'){
+              if(item.productNum > 1){
+                  item.productNum--;
+              }
+          }
+          else{
+              item.checked = !item.checked;
+          }
       }
   }
 }
