@@ -1,0 +1,54 @@
+{
+  "code":0,
+  "data":[
+    {
+      "addressId": "100001",
+      "userName": "NXDDDD",
+      "streetName": "2888 Erwin Rd, Durham",
+      "postCode": "27710",
+      "tel": 9192332333,
+      "isDefault": false
+    },
+    {
+      "addressId": "100002",
+      "userName": "Jack Ma",
+      "streetName": "Xihu District, Hangzhou",
+      "postCode": "100002",
+      "tel": 18099999999,
+      "isDefault": true
+    },
+    {
+      "addressId": "100003",
+      "userName": "Jun Lei",
+      "streetName": "Changpin District, Beijing",
+      "postCode": "100003",
+      "tel": 16022222222,
+      "isDefault": false
+    },
+    {
+      "addressId": "100004",
+      "userName": "Robin Li",
+      "streetName": "Haidian District, Beijing",
+      "postCode": "100004",
+      "tel": 15033333333,
+      "isDefault": false
+    },
+    {
+      "addressId": "100005",
+      "userName": "Pony Ma",
+      "streetName": "Nanshan, Shenzhen",
+      "postCode": "100005",
+      "tel": 13055555555,
+      "isDefault": false
+    },
+    {
+      "addressId": "100006",
+      "userName": "Johnsson Liu",
+      "streetName": "Yizhuang Beijing",
+      "postCode": "100006",
+      "tel": 12055555555,
+      "isDefault": false
+    }
+  ],
+  "message":""
+}

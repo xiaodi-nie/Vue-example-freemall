@@ -1,0 +1,54 @@
+{
+  "code":0,
+  "data":[
+    {
+      "productId": "100001",
+      "productName": "XiaoDu AI Voice Assistant Device",
+      "productPrice": 21.99,
+      "productNum": 2,
+      "productImage": "1.jpg",
+      "checked":false
+    },
+    {
+      "productId": "100002",
+      "productName": "XiaoDu AI Speaker Black",
+      "productPrice": 32.99,
+      "productNum": 5,
+      "productImage": "2.jpg",
+      "checked": true
+    },
+    {
+      "productId": "100003",
+      "productName": "XiaoDu AI Video Assistant Device",
+      "productPrice": 59.99,
+      "productNum": 1,
+      "productImage": "3.jpg",
+      "checked": true
+    },
+    {
+      "productId": "100004",
+      "productName": "XiaoDu AI Speaker Mini",
+      "productPrice": 32.99,
+      "productNum": 3,
+      "productImage": "4.jpg",
+      "checked": true
+    },
+    {
+      "productId": "100005",
+      "productName": "XiaoDu AI Speaker Junior",
+      "productPrice": 21.99,
+      "productNum": 2,
+      "productImage": "5.png",
+      "checked": false
+    },
+    {
+      "productId": "100006",
+      "productName": "XiaoDi AI Pro",
+      "productPrice": 42.99,
+      "productNum": 1,
+      "productImage": "6.jpg",
+      "checked": true
+    }
+  ],
+  "message":""
+}

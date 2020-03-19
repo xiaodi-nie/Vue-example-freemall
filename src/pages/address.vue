@@ -140,7 +140,7 @@
 <script>
 import NavHeader from './../components/Header.vue'
 import NavFooter from './../components/Footer.vue'
-//import Modal from './../components/Modal.vue'
+import Modal from './../components/Modal.vue'
 export default {
   name: 'addr',//don't use 'address' as name as it is reserved
   data(){
@@ -151,7 +151,7 @@ export default {
   components:{
       NavHeader,
       NavFooter,
-      //Modal
+      Modal
   }
 }
 </script>
