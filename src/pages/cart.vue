@@ -18,7 +18,7 @@
         <path class="path1"
           d="M31.020 0.438c-0.512-0.363-1.135-0.507-1.757-0.406s-1.166 0.435-1.529 0.937l-17.965 24.679-5.753-5.67c-0.445-0.438-1.035-0.679-1.664-0.679s-1.219 0.241-1.664 0.679c-0.917 0.904-0.917 2.375 0 3.279l7.712 7.6c0.438 0.432 1.045 0.681 1.665 0.681l0.195-0.008c0.688-0.057 1.314-0.406 1.717-0.959l19.582-26.9c0.754-1.038 0.512-2.488-0.538-3.233z">
         </path>
-      </symbol>
+      </symbol>     
       <symbol id="icon-del" viewBox="0 0 32 32">
         <title>delete</title>
         <path class="path1"
@@ -89,7 +89,7 @@
               </div>
               <div class="cart-tab-5">
                 <div class="cart-item-opration">
-                  <a href="javascript:;" class="item-edit-btn">
+                  <a href="javascript:;" class="item-edit-btn" @click="delItemConfirm(item)">
                     <svg class="icon icon-del">
                       <use xlink:href="#icon-del"></use>
                     </svg>
@@ -126,6 +126,17 @@
     </div>
   </div>
   <nav-footer></nav-footer>
+  <modal v-bind:mdShow="modalConfirm" @close="closeModal">
+      <template v-slot:message>
+          <p>Are you sure you want to delete this item?</p>
+      </template>
+      
+      <template v-slot:btnGroup>
+          <a class="btn btn--m" href="javascript:;" @click="delFromCart">Confirm</a>
+          <a class="btn btn--m btn--red" href="javascript:;" @click="modalConfirm=false">Cancel</a>
+      </template>
+      
+  </modal>
   </div>
 </template>
 
@@ -139,6 +150,8 @@ export default {
   data(){
       return {
           cartList:[],
+          modalConfirm:false,//whether to show modal
+          delItem:'',//item that is going to be deleted
       }
   },
   components:{
@@ -177,6 +190,24 @@ export default {
           else{
               item.checked = !item.checked;
           }
+      },
+      //delete item from cart and confirm in modal
+      delItemConfirm(item){
+          this.delItem = item;
+          this.modalConfirm = true;
+      },
+      closeModal(){
+          this.modalConfirm = false;
+      },
+      //delete item
+      delFromCart(){
+          let del = this.delItem;
+          this.cartList.forEach((item,index)=>{
+              if(del.productId == item.productId){
+                  this.cartList.splice(index,1);//start from index, delete 1 item from array
+                  this.modalConfirm = false;
+              }
+          })
       }
   }
 }
