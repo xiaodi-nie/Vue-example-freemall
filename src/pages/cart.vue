@@ -104,8 +104,8 @@
         <div class="cart-foot-inner">
           <div class="cart-foot-l">
             <div class="item-all-check">
-              <a href="javascipt:;">
-                <span class="checkbox-btn item-check-btn check">
+              <a href="javascipt:;" @click="toggleCheckAll">
+                <span class="checkbox-btn item-check-btn" v-bind:class="{'check':checkAllFlag}">
                   <svg class="icon icon-ok">
                     <use xlink:href="#icon-ok" /></svg>
                 </span>
@@ -115,10 +115,10 @@
           </div>
           <div class="cart-foot-r">
             <div class="item-total">
-              Total: <span class="total-price">$15.99</span>
+              Total: <span class="total-price">{{totalPrice | currency}}</span>
             </div>
             <div class="btn-wrap">
-              <a class="btn btn--red btn--dis">Check Out</a>
+              <a class="btn btn--red" v-bind:class="{'btn--dis':!checkedCount}" @click="checkOut">Check Out</a>
             </div>
           </div>
         </div>
@@ -161,6 +161,30 @@ export default {
   },
   mounted(){
       this.init();//initialize cart item list
+  },
+  computed:{
+      //return true only when every item has item.checked == true
+      checkAllFlag(){
+          return this.cartList.every((item)=>{
+              return item.checked;
+          });
+      },
+      //check if there's any checked item
+      checkedCount(){
+          return this.cartList.some((item)=>{
+              return item.checked;
+          });
+      },
+      //this function is called every time cartList is changed
+      totalPrice(){
+          let money = 0;
+          this.cartList.forEach((item)=>{
+              if(item.checked){
+                  money += item.productPrice * item.productNum;
+              }
+          })
+          return money;
+      }
   },
   filters:{
       currency(value){
@@ -208,6 +232,22 @@ export default {
                   this.modalConfirm = false;
               }
           })
+      },
+      //select all and deselect all
+      toggleCheckAll(){
+          let flag = !this.checkAllFlag;//click the checkbox to toggle reverse
+          this.cartList.forEach((item)=>{
+              item.checked = flag;//keep every item uniform with the check all checkbox
+          });
+      },
+      checkOut(){
+          //proceed only if at least one item is checked
+          if(this.checkedCount){
+              //vue router api
+              this.$router.push({
+                  path:'/address'
+              })
+          }
       }
   }
 }
