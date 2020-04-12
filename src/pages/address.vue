@@ -65,25 +65,25 @@
         <div class="addr-list-wrap">
           <div class="addr-list">
             <ul>
-              <li  class="check">
+              <li  v-bind:class="{'check':checkedIndex == index}" v-for="(item,index) in addressFilter" :key="item.addressId" @click="checkedIndex = index">
                 <dl>
-                  <dt>XD</dt>
-                  <dd class="address">Duke University, Durham, 27708</dd>
-                  <dd class="tel">919-233-2333</dd>
+                  <dt>{{item.userName}}</dt>
+                  <dd class="address">{{item.streetName}}</dd>
+                  <dd class="tel">{{item.tel}}</dd>
                 </dl>
                 <div class="addr-opration addr-del">
                   <!-- Delete Address -->
-                  <a href="javascript:;" class="addr-del-btn">
+                  <a href="javascript:;" class="addr-del-btn" @click="delAddressConfirm(item.addressId)">
                     <svg class="icon icon-del">
                       <use xlink:href="#icon-del"></use>
                     </svg>
                   </a>
                 </div>
                 <div class="addr-opration addr-set-default">
-                  <a href="javascript:;" class="addr-set-default-btn"><i>Set as Default</i></a>
+                  <a href="javascript:;" class="addr-set-default-btn" @click="setDefault(item.addressId)" v-if="!item.isDefault"><i>Set as Default</i></a>
                 </div>
                 <br>
-                <div class="addr-opration addr-default">Default Address</div>
+                <div class="addr-opration addr-default" v-if="item.isDefault">Default Address</div>
               </li>
   
               <li class="addr-new">
@@ -100,8 +100,8 @@
           </div>
   
           <div class="shipping-addr-more">
-            <a class="addr-more-btn up-down-btn open" href="javascript:;">
-              More
+            <a class="addr-more-btn up-down-btn" href="javascript:;" @click="expand" v-bind:class="{'open':limit>3}">
+              {{listControl}}
               <i class="i-up-down">
                 <i class="i-up-down-l"></i>
                 <i class="i-up-down-r"></i>
@@ -128,11 +128,21 @@
           </div>
         </div>
         <div class="next-btn-wrap">
-          <a class="btn btn--m btn--red" href="#">Next</a>
+          <a class="btn btn--m btn--red" href="javascript:;" @click="next">Next</a>
         </div>
       </div>
     </div>
   </div>
+  <modal v-bind:mdShow="modalConfirm" @close="modalConfirm=false">
+      <template v-slot:message>
+          <p>Are you sure you want to check out?</p>
+      </template>
+      
+      <template v-slot:btnGroup>
+          <a class="btn btn--m btn--red" href="javascript:;" @click="modalConfirm=false">Cancel</a>
+      </template>
+      
+  </modal>
   <nav-footer></nav-footer>
   </div>
 </template>
@@ -145,13 +155,66 @@ export default {
   name: 'addr',//don't use 'address' as name as it is reserved
   data(){
       return {
-
+        checkedIndex:0,
+        addressList:[],
+        limit:3,
+        listControl:'More',
+        modalConfirm:false
       }
   },
   components:{
       NavHeader,
       NavFooter,
       Modal
+  },
+  computed:{
+    addressFilter(){
+      return this.addressList.slice(0,this.limit);
+    }
+  },
+  mounted(){
+    this.init();
+  },
+  methods:{
+    init(){
+      this.axios.get('/mock/address.json').then((response)=>{
+        let res = response.data;
+        this.addressList = res.data;
+        res.data.forEach((item,index) => {
+          if(item.isDefault){
+            this.checkedIndex = index;
+          }
+        });
+      })
+    },
+    expand(){
+      if(this.limit == 3){
+        this.limit = this.addressList.length;
+        this.listControl = 'Collapse';
+      }else{
+        this.limit = 3;
+        this.listControl = 'More';
+      }
+    },
+    setDefault(addressId){
+      this.addressList.map((item)=>{
+        if(addressId == item.addressId){
+          item.isDefault = true;
+        }else{
+          item.isDefault = false;
+        }
+      })
+    },
+    delAddressConfirm(addressId){
+      this.addressList.map((item,index)=>{
+        if(addressId == item.addressId){
+          this.addressList.splice(index,1);//start from index, delete one item from list
+        }
+      })
+    },
+    next(){
+      this.modalConfirm = true;
+    }
   }
 }
 </script>
